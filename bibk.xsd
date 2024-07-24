@@ -1,0 +1,199 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+  attributeFormDefault="unqualified">
+  <xs:annotation>
+      <xs:documentation>BIlingual BooK (bibk) XML Schema. A variant of DocBook 5.2 tailored for bilingual dedicated to bilingual text documents: poems, short stories, novels, academic articles...</xs:documentation>
+    </xs:annotation>
+  <xs:import namespace="http://www.w3.org/XML/1998/namespace"
+    schemaLocation="https://www.w3.org/2009/01/xml.xsd" />
+  <xs:element name="book">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="info" minOccurs="1" maxOccurs="1">
+          <xs:complexType>
+            <xs:complexContent>
+              <xs:extension base="mininfo">
+                <xs:sequence>
+                  <xs:element name="abstract" type="bipara" minOccurs="0" maxOccurs="1" />
+                  <xs:element name="authorgroup" type="authorgroup" minOccurs="0" maxOccurs="1" />
+                  <xs:element name="biblioid" type="xs:string" minOccurs="0" maxOccurs="1" />
+                  <xs:element name="cover" type="xs:string" minOccurs="0" maxOccurs="1" />
+                  <xs:element name="edition" type="xs:string" minOccurs="0" maxOccurs="1" />
+                  <xs:element name="keywordset" minOccurs="0" maxOccurs="1">
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element name="keyword" type="xs:string" minOccurs="1"
+                          maxOccurs="unbounded" />
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                  <xs:element name="legalnotice" type="bipara" minOccurs="0" maxOccurs="1" />
+                  <xs:element name="printhistory" type="bipara" minOccurs="0" maxOccurs="1" />
+                  <xs:element name="pubdate" type="date" minOccurs="0" maxOccurs="1" />
+                  <xs:element name="publisher" minOccurs="0" maxOccurs="1">
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element name="publishername" type="xs:string" minOccurs="1"
+                          maxOccurs="1" />
+                        <xs:element name="address" minOccurs="0" maxOccurs="1">
+                          <xs:complexType mixed="true">
+                            <xs:sequence>
+                              <xs:element name="email" minOccurs="0" maxOccurs="1" type="xs:string" />
+                            </xs:sequence>
+                          </xs:complexType>
+                        </xs:element>
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                  <xs:element name="subjectset" minOccurs="0" maxOccurs="1">
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element name="subject" minOccurs="1" maxOccurs="unbounded">
+                          <xs:complexType>
+                            <xs:sequence>
+                              <xs:element name="subjectterm" minOccurs="1" maxOccurs="unbounded"
+                                type="xs:string"></xs:element>
+                            </xs:sequence>
+                          </xs:complexType>
+                        </xs:element>
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                </xs:sequence>
+              </xs:extension>
+            </xs:complexContent>
+          </xs:complexType>
+        </xs:element>
+
+        <xs:choice>
+          <xs:element name="article" minOccurs="1" maxOccurs="1">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:minLength value="1" />
+                <xs:maxLength value="256" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+          <xs:sequence>
+            <xs:element name="preface" minOccurs="0" maxOccurs="unbounded">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="info" type="medinfo" minOccurs="0" maxOccurs="1" />
+                  <xs:element name="warning" type="bisection" />
+                  <xs:element name="para" type="bipara" minOccurs="1" maxOccurs="unbounded" />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+            <xs:choice>
+              <xs:element name="chapter" minOccurs="1" maxOccurs="unbounded" type="bisection" />
+              <xs:element name="part" minOccurs="1" maxOccurs="unbounded">
+                <xs:annotation>
+                  <xs:documentation>A part is composed of un info and one or more chapters</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                  <xs:complexContent>
+                    <xs:extension base="mininfo">
+                      <xs:sequence>
+                        <xs:element name="chapter" type="bisection" minOccurs="0" maxOccurs="1" />
+                      </xs:sequence>
+                    </xs:extension>
+                  </xs:complexContent>
+                </xs:complexType>
+              </xs:element>
+            </xs:choice>
+          </xs:sequence>
+
+        </xs:choice>
+        <xs:element name="appendix" type="xs:date" minOccurs="0" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>Library existing since</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="index" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>List of books available at library</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+
+  <xs:complexType name="bitext" mixed="true">
+    <xs:all>
+      <xs:element name="foreignphrase" type="sourcetext" />
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="authorgroup">
+    <xs:sequence>
+      <xs:element name="author" type="xs:string" />
+      <xs:element name="othercredit" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="bisection">
+    <xs:sequence>
+      <xs:element name="info" type="mininfo" minOccurs="0" maxOccurs="1" />
+      <xs:element name="para" type="bipara" minOccurs="1" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="bipara">
+    <xs:sequence>
+      <xs:element name="para" type="bitext" minOccurs="1" maxOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="date">
+    <xs:union memberTypes="xs:date xs:gYearMonth xs:gYear" />
+  </xs:simpleType>
+  <xs:complexType name="medinfo">
+    <xs:complexContent>
+      <xs:extension base="mininfo">
+        <xs:sequence>
+          <xs:element name="authorgroup" type="xs:string" minOccurs="0" maxOccurs="1" />
+          <xs:element name="pubdate" type="xs:date" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="mininfo">
+    <xs:sequence>
+      <xs:element name="subtitle" type="bitext" minOccurs="0" maxOccurs="1" />
+      <xs:element name="title" type="bitext" minOccurs="1" maxOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="outputformat">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="epub" />
+      <xs:enumeration value="pdf" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="richtext" mixed="true">
+    <xs:sequence>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="citetitle" type="xs:string" />
+        <xs:element name="date" type="date" />
+        <xs:element name="emphasis" type="xs:string" />
+        <xs:element name="foreignphrase">
+          <xs:annotation>
+            <xs:documentation>A phrase in a tier language (not the original text in the source
+              language)</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:simpleContent>
+              <xs:extension base="xs:string">
+                <xs:attribute ref="xml:lang" use="required" />
+              </xs:extension>
+            </xs:simpleContent>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:attribute name="role" fixed="source" />
+  <xs:complexType name="sourcetext">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute ref="role" />
+        <xs:attribute ref="xml:lang" use="required" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+</xs:schema>
