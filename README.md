@@ -31,6 +31,7 @@ Three structures are supported :
 ### Figures
  - Images
  - Tables
+
 Note: For each figure, up to 3 variants can be prepared: source language only, target language only, bilingual.
 ### Rich text block
 The following inline elements are supported:
