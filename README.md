@@ -28,10 +28,12 @@ Three structures are supported :
 - Index
 
 ## Expressivity capability of the document content
-### Block elements
+### Figures
  - Images
- - Rich text blocks
-### Inline elements for rich text blocks
+ - Tables
+Note: For each figure, up to 3 variants can be prepared: source language only, target language only, bilingual.
+### Rich text block
+The following inline elements are supported:
 - _citetitle_ for work titles
 - _date_ for dates
 - _emphasis_for italic
@@ -40,5 +42,5 @@ _ _foreignphrase_ for words in other languages
 - _footnote_ for notes
 
 ## Comparison with DocBook 5.2 format
-Bibk format restrict DocBook format in many ways. The only extension it adds is related to Japanese furigana. The main semantic tweak is related to _foreignphrase_ element with _role="source"_ attribute.
+Bibk format restricts DocBook format in many many ways. The only formal extension it adds is Japanese furigana (_ruby_ & _rt_ tags). The main semantic tweak is related to _foreignphrase_ element with _role="source"_ attribute, which exposes the original text in the source language.
 A valid Bibk document with no furigana should be valid regarding the DocBook relaxng. (Only limited tested have been performed.)
