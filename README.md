@@ -10,5 +10,5 @@ Xml file format definition for a basic variant of DocBook dedicated to bilingual
 <details>
 <summary>Document content structure</summary>
 Three structures are supported :
-- Single ```article```
+- Single _article_
 </details>
