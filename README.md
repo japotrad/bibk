@@ -27,7 +27,7 @@ Three structures are supported :
 - Appendix
 - Index
 
-## Expressivity capability of the document content
+## Expressive capability of document content
 ### Figures
  - Images
  - Tables
