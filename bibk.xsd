@@ -231,4 +231,9 @@
       </xs:extension>
     </xs:simpleContent>
   </xs:complexType>
+  <xs:complexType name="ruby" mixed="true">
+    <xs:sequence>
+      <xs:element name="rt" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
 </xs:schema>
