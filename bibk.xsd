@@ -1,8 +1,10 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
   attributeFormDefault="unqualified">
   <xs:annotation>
-      <xs:documentation>BIlingual BooK (bibk) XML Schema. A variant of DocBook 5.2 tailored for bilingual dedicated to bilingual text documents: poems, short stories, novels, academic articles...</xs:documentation>
-    </xs:annotation>
+    <xs:documentation>BIlingual BooK (bibk) XML Schema. A variant of DocBook 5.2 tailored for
+      bilingual dedicated to bilingual text documents: poems, short stories, novels, academic
+      articles...</xs:documentation>
+  </xs:annotation>
   <xs:import namespace="http://www.w3.org/XML/1998/namespace"
     schemaLocation="https://www.w3.org/2009/01/xml.xsd" />
   <xs:element name="book">
@@ -15,7 +17,7 @@
                 <xs:sequence>
                   <xs:element name="abstract" type="bipara" minOccurs="0" maxOccurs="1" />
                   <xs:element name="authorgroup" type="authorgroup" minOccurs="0" maxOccurs="1" />
-                  <xs:element name="biblioid" type="xs:string" minOccurs="0" maxOccurs="1" />
+                  <xs:element name="biblioid" type="xs:string" minOccurs="0" maxOccurs="2" />
                   <xs:element name="cover" type="xs:string" minOccurs="0" maxOccurs="1" />
                   <xs:element name="edition" type="xs:string" minOccurs="0" maxOccurs="1" />
                   <xs:element name="keywordset" minOccurs="0" maxOccurs="1">
@@ -63,7 +65,6 @@
             </xs:complexContent>
           </xs:complexType>
         </xs:element>
-
         <xs:choice>
           <xs:element name="article" minOccurs="1" maxOccurs="1">
             <xs:simpleType>
@@ -101,7 +102,6 @@
               </xs:element>
             </xs:choice>
           </xs:sequence>
-
         </xs:choice>
         <xs:element name="appendix" type="xs:date" minOccurs="0" maxOccurs="unbounded">
           <xs:annotation>
@@ -116,8 +116,6 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-
-
   <xs:complexType name="bitext" mixed="true">
     <xs:all>
       <xs:element name="foreignphrase" type="sourcetext" />
@@ -125,8 +123,39 @@
   </xs:complexType>
   <xs:complexType name="authorgroup">
     <xs:sequence>
-      <xs:element name="author" type="xs:string" />
-      <xs:element name="othercredit" type="xs:string" />
+      <xs:element name="author" minOccurs="1" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="personname" type="personname" minOccurs="1" maxOccurs="1" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="othercredit" minOccurs="0" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="personname" type="personname" minOccurs="1" maxOccurs="1" />
+          </xs:sequence>
+          <xs:attribute name="class">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="conversion" />
+                <xs:enumeration value="copyeditor" />
+                <xs:enumeration value="coverdesigner" />
+                <xs:enumeration value="graphicdesigner" />
+                <xs:enumeration value="illustrator" />
+                <xs:enumeration value="indexer" />
+                <xs:enumeration value="interiordesigner" />
+                <xs:enumeration value="productioneditor" />
+                <xs:enumeration value="proofreader" />
+                <xs:enumeration value="reviewer" />
+                <xs:enumeration value="technicaleditor" />
+                <xs:enumeration value="translator" />
+                <xs:enumeration value="typesetter" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
     </xs:sequence>
   </xs:complexType>
   <xs:complexType name="bisection">
@@ -165,6 +194,12 @@
       <xs:enumeration value="pdf" />
     </xs:restriction>
   </xs:simpleType>
+  <xs:complexType name="personname">
+    <xs:sequence>
+      <xs:element name="firstname" type="xs:string" />
+      <xs:element name="surname" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
   <xs:complexType name="richtext" mixed="true">
     <xs:sequence>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
