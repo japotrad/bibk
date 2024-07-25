@@ -1,17 +1,26 @@
 # bibk
 Xml file format definition for a basic variant of DocBook dedicated to bilingual text documents
 
-### Document metadata in book/info ###
+## Dual language management
+Let’s say we have a document in a source language _so_, translated into a target language _ta_. The bilingual book audience is mainly composed of the target language users. So, the bibk root element should be in _ta_ language. For example:
+```xml
+<book xml:lang="ta">
+	<title>Translated title<foreignphrase xml:lang="so" role="source">Original title</foreignphrase></title>
+</book>
+```
+
+## Description of the format
+### Document metadata in book/info
 - Title, subtitle
 - Author, translator...
 - Publisher, publication date, ISBN...
 
-### Document content structure ###
+### Document content structure
 Three structures are supported :
 - Single article
 - List of chapters
 - List of parts containing chapters
 
-### Backmatter ###
+### Backmatter
 - Appendix
 - Index
