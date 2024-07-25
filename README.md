@@ -38,3 +38,7 @@ Three structures are supported :
 _ _foreignphrase_ for words in other languages
 - _ruby_ and _rt_ for Japanese furigana
 - _footnote_ for notes
+
+## Comparison with DocBook 5.2 format
+Bibk format restrict DocBook format in many ways. The only extension it adds is related to Japanese furigana. The main semantic tweak is related to _foreignphrase_ element with _role="source"_ attribute.
+A valid Bibk document with no furigana should be valid regarding the DocBook relaxng. (Only limited tested have been performed.)
