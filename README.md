@@ -1,14 +1,17 @@
 # bibk
 Xml file format definition for a basic variant of DocBook dedicated to bilingual text documents
 
-<details>
-<summary>Document metadata in book/info</summary>
+### Document metadata in book/info ###
 - Title, subtitle
 - Author, translator...
 - Publisher, publication date, ISBN...
-</details>
-<details>
-<summary>Document content structure</summary>
+
+### Document content structure ###
 Three structures are supported :
-- Single _article_
-</details>
+- Single article
+- List of chapters
+- List of parts containing chapters
+
+### Backmatter ###
+- Appendix
+- Index
