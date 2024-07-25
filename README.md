@@ -12,7 +12,7 @@ Let’s say we have a document in a source language _so_, translated into a targ
 ```
 
 ## Description of the format
-### Document metadata in book/info
+### Document metadata in _book_/_info_
 - Title, subtitle
 - Author, translator...
 - Publisher, publication date, ISBN...
@@ -27,7 +27,14 @@ Three structures are supported :
 - Appendix
 - Index
 
-### Inline elements
-- _emphasis_ for italic
+## Expressivity capability of the document content
+### Block elements
+ - Images
+ - Rich text blocks
+### Inline elements for rich text blocks
+- _citetitle_ for work titles
+- _date_ for dates
+- _emphasis_for italic
+_ _foreignphrase_ for words in other languages
 - _ruby_ and _rt_ for Japanese furigana
 - _footnote_ for notes
