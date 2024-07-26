@@ -94,7 +94,8 @@
                   <xs:complexContent>
                     <xs:extension base="mininfo">
                       <xs:sequence>
-                        <xs:element name="chapter" type="bisection" minOccurs="0" maxOccurs="1" />
+                        <xs:element name="chapter" type="bisection" minOccurs="1"
+                          maxOccurs="unbounded" />
                       </xs:sequence>
                     </xs:extension>
                   </xs:complexContent>
@@ -103,15 +104,17 @@
             </xs:choice>
           </xs:sequence>
         </xs:choice>
-        <xs:element name="appendix" type="xs:date" minOccurs="0" maxOccurs="unbounded">
-          <xs:annotation>
-            <xs:documentation>Library existing since</xs:documentation>
-          </xs:annotation>
+        <xs:element name="appendix" type="bisection" minOccurs="0" maxOccurs="unbounded">
         </xs:element>
-        <xs:element name="index" type="xs:string" minOccurs="0" maxOccurs="unbounded">
-          <xs:annotation>
-            <xs:documentation>List of books available at library</xs:documentation>
-          </xs:annotation>
+        <xs:element name="index" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="info" type="mininfo" minOccurs="1" maxOccurs="1" />
+              <xs:choice minOccurs="1" maxOccurs="unbounded">
+                <xs:element name="indexentry" type="indexentry" minOccurs="1" maxOccurs="unbounded" />
+              </xs:choice>
+            </xs:sequence>
+          </xs:complexType>
         </xs:element>
       </xs:sequence>
     </xs:complexType>
@@ -163,33 +166,47 @@
   </xs:simpleType>
   <xs:complexType name="bisection">
     <xs:sequence>
-      <xs:element name="info" type="mininfo" minOccurs="0" maxOccurs="1" />
-      <xs:element name="para" type="bipara" minOccurs="1" maxOccurs="unbounded" />
+      <xs:element name="info" type="mininfo" minOccurs="1" maxOccurs="1" />
+      <xs:choice minOccurs="1" maxOccurs="unbounded">
+        <xs:element name="para" type="bipara" minOccurs="0" maxOccurs="unbounded" />
+        <xs:element name="mediaobject" type="mediaobject" />
+        <xs:element name="bridgehead">
+          <xs:complexType>
+            <xs:attribute name="renderas" fixed="other" />
+            <xs:attribute name="otherrenderas" fixed="separator" />
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
     </xs:sequence>
   </xs:complexType>
   <xs:complexType name="bitext" mixed="true">
     <xs:sequence minOccurs="1" maxOccurs="1">
-      <xs:element name="foreignphrase" type="sourcetext" minOccurs="1" maxOccurs="1"/>
+      <xs:element name="foreignphrase" type="sourcetext" minOccurs="1" maxOccurs="1" />
       <xs:element name="ruby" type="ruby" minOccurs="0" maxOccurs="unbounded" />
     </xs:sequence>
   </xs:complexType>
   <xs:complexType name="imagedata">
     <xs:attribute name="fileref" type="xs:string" />
-    </xs:complexType>
+  </xs:complexType>
   <xs:complexType name="imageobject">
     <xs:sequence minOccurs="1" maxOccurs="1">
-      <xs:element name="imagedata" type="imagedata" minOccurs="1" maxOccurs="1"/>
+      <xs:element name="imagedata" type="imagedata" minOccurs="1" maxOccurs="1" />
     </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="indexentry">
+    <xs:all>
+      <xs:element name="primaryie" type="primaryie" />
+    </xs:all>
   </xs:complexType>
   <xs:complexType name="mediaobject">
     <xs:annotation>
       <xs:documentation>A default (bilingual) image, and optionaly 2 monolingual images</xs:documentation>
     </xs:annotation>
-        <xs:sequence>
-          <xs:element name="imageobject" type="imageobject" minOccurs="1" maxOccurs="1" />
-          <xs:element name="imageobject" type="monoimageobject" minOccurs="0" maxOccurs="1" />
-          <xs:element name="caption" type="bipara" minOccurs="0" maxOccurs="1"/>
-        </xs:sequence>
+    <xs:sequence>
+      <xs:element name="imageobject" type="imageobject" minOccurs="1" maxOccurs="1" />
+      <xs:element name="imageobject" type="monoimageobject" minOccurs="0" maxOccurs="1" />
+      <xs:element name="caption" type="bipara" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
   </xs:complexType>
   <xs:complexType name="medinfo">
     <xs:complexContent>
@@ -224,10 +241,23 @@
     </xs:restriction>
   </xs:simpleType>
   <xs:complexType name="personname">
-    <xs:sequence>
+    <xs:all>
       <xs:element name="firstname" type="bitext" />
       <xs:element name="surname" type="bitext" />
-    </xs:sequence>
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="primaryie">
+    <xs:all>
+      <xs:element name="link">
+        <xs:complexType>
+          <xs:complexContent>
+            <xs:extension base="bitext">
+              <xs:attribute name="linkend" type="xs:IDREF" use="required" />
+            </xs:extension>
+          </xs:complexContent>
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
   </xs:complexType>
   <xs:complexType name="rtext" mixed="true">
     <xs:annotation>
