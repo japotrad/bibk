@@ -46,7 +46,7 @@ Note: For each figure, up to 3 variants can be prepared: source language only, t
 
 ### Separators
 - _bridgehead_
-- 
+
 ## Comparison with DocBook 5.2 format
 Bibk format restricts DocBook format in many many ways. The only formal extension it adds is Japanese furigana (_ruby_ & _rt_ tags). The main semantic tweak is related to _foreignphrase_ element with _role="source"_ attribute, which exposes the original text in the source language.
 A valid Bibk document with no furigana should be valid regarding the DocBook relaxng. (No testing have been performed, but you can report issues if you find some.)
