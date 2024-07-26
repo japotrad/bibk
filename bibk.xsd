@@ -116,11 +116,6 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:complexType name="bitext" mixed="true">
-    <xs:all>
-      <xs:element name="foreignphrase" type="sourcetext" />
-    </xs:all>
-  </xs:complexType>
   <xs:complexType name="authorgroup">
     <xs:sequence>
       <xs:element name="author" minOccurs="1" maxOccurs="unbounded">
@@ -158,12 +153,6 @@
       </xs:element>
     </xs:sequence>
   </xs:complexType>
-  <xs:complexType name="bisection">
-    <xs:sequence>
-      <xs:element name="info" type="mininfo" minOccurs="0" maxOccurs="1" />
-      <xs:element name="para" type="bipara" minOccurs="1" maxOccurs="unbounded" />
-    </xs:sequence>
-  </xs:complexType>
   <xs:complexType name="bipara">
     <xs:sequence>
       <xs:element name="para" type="bitext" minOccurs="1" maxOccurs="1" />
@@ -172,11 +161,41 @@
   <xs:simpleType name="date">
     <xs:union memberTypes="xs:date xs:gYearMonth xs:gYear" />
   </xs:simpleType>
+  <xs:complexType name="bisection">
+    <xs:sequence>
+      <xs:element name="info" type="mininfo" minOccurs="0" maxOccurs="1" />
+      <xs:element name="para" type="bipara" minOccurs="1" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="bitext" mixed="true">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element name="foreignphrase" type="sourcetext" minOccurs="1" maxOccurs="1"/>
+      <xs:element name="ruby" type="ruby" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="imagedata">
+    <xs:attribute name="fileref" type="xs:string" />
+    </xs:complexType>
+  <xs:complexType name="imageobject">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element name="imagedata" type="imagedata" minOccurs="1" maxOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="mediaobject">
+    <xs:annotation>
+      <xs:documentation>A default (bilingual) image, and optionaly 2 monolingual images</xs:documentation>
+    </xs:annotation>
+        <xs:sequence>
+          <xs:element name="imageobject" type="imageobject" minOccurs="1" maxOccurs="1" />
+          <xs:element name="imageobject" type="monoimageobject" minOccurs="0" maxOccurs="1" />
+          <xs:element name="caption" type="bipara" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+  </xs:complexType>
   <xs:complexType name="medinfo">
     <xs:complexContent>
       <xs:extension base="mininfo">
         <xs:sequence>
-          <xs:element name="authorgroup" type="xs:string" minOccurs="0" maxOccurs="1" />
+          <xs:element name="authorgroup" type="authorgroup" minOccurs="0" maxOccurs="1" />
           <xs:element name="pubdate" type="xs:date" minOccurs="0" maxOccurs="1" />
         </xs:sequence>
       </xs:extension>
@@ -188,6 +207,16 @@
       <xs:element name="title" type="bitext" minOccurs="1" maxOccurs="1" />
     </xs:sequence>
   </xs:complexType>
+  <xs:complexType name="monoimageobject">
+    <xs:annotation>
+      <xs:documentation>An image on which some monolingual text is shown.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="imageobject">
+        <xs:attribute ref="xml:lang" use="required" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
   <xs:simpleType name="outputformat">
     <xs:restriction base="xs:string">
       <xs:enumeration value="epub" />
@@ -196,8 +225,16 @@
   </xs:simpleType>
   <xs:complexType name="personname">
     <xs:sequence>
-      <xs:element name="firstname" type="xs:string" />
-      <xs:element name="surname" type="xs:string" />
+      <xs:element name="firstname" type="bitext" />
+      <xs:element name="surname" type="bitext" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="rtext" mixed="true">
+    <xs:annotation>
+      <xs:documentation>Plain text with optional ruby elements for Japanese furiganas</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="ruby" type="ruby" minOccurs="0" maxOccurs="unbounded" />
     </xs:sequence>
   </xs:complexType>
   <xs:complexType name="richtext" mixed="true">
@@ -219,17 +256,18 @@
             </xs:simpleContent>
           </xs:complexType>
         </xs:element>
+        <xs:element name="ruby" type="ruby" />
       </xs:choice>
     </xs:sequence>
   </xs:complexType>
   <xs:attribute name="role" fixed="source" />
   <xs:complexType name="sourcetext">
-    <xs:simpleContent>
-      <xs:extension base="xs:string">
+    <xs:complexContent>
+      <xs:extension base="rtext">
         <xs:attribute ref="role" />
         <xs:attribute ref="xml:lang" use="required" />
       </xs:extension>
-    </xs:simpleContent>
+    </xs:complexContent>
   </xs:complexType>
   <xs:complexType name="ruby" mixed="true">
     <xs:sequence>
