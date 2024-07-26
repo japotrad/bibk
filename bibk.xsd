@@ -79,13 +79,13 @@
               <xs:complexType>
                 <xs:sequence>
                   <xs:element name="info" type="medinfo" minOccurs="0" maxOccurs="1" />
-                  <xs:element name="warning" type="bisection" />
+                  <xs:element name="warning" type="section" />
                   <xs:element name="para" type="bipara" minOccurs="1" maxOccurs="unbounded" />
                 </xs:sequence>
               </xs:complexType>
             </xs:element>
             <xs:choice>
-              <xs:element name="chapter" minOccurs="1" maxOccurs="unbounded" type="bisection" />
+              <xs:element name="chapter" minOccurs="1" maxOccurs="unbounded" type="section" />
               <xs:element name="part" minOccurs="1" maxOccurs="unbounded">
                 <xs:annotation>
                   <xs:documentation>A part is composed of un info and one or more chapters</xs:documentation>
@@ -94,7 +94,7 @@
                   <xs:complexContent>
                     <xs:extension base="mininfo">
                       <xs:sequence>
-                        <xs:element name="chapter" type="bisection" minOccurs="1"
+                        <xs:element name="chapter" type="section" minOccurs="1"
                           maxOccurs="unbounded" />
                       </xs:sequence>
                     </xs:extension>
@@ -104,7 +104,7 @@
             </xs:choice>
           </xs:sequence>
         </xs:choice>
-        <xs:element name="appendix" type="bisection" minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="appendix" type="section" minOccurs="0" maxOccurs="unbounded">
         </xs:element>
         <xs:element name="index" minOccurs="0" maxOccurs="unbounded">
           <xs:complexType>
@@ -157,33 +157,48 @@
     </xs:sequence>
   </xs:complexType>
   <xs:complexType name="bipara">
-    <xs:sequence>
-      <xs:element name="para" type="bitext" minOccurs="1" maxOccurs="1" />
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element name="para" minOccurs="1" maxOccurs="1">
+        <xs:complexType mixed="true">
+          <xs:sequence>
+            <xs:element name="foreignphrase" minOccurs="1" maxOccurs="1">
+              <xs:complexType>
+                <xs:sequence minOccurs="1" maxOccurs="1">
+                  <xs:group ref="richtext" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+                <xs:attribute ref="role" />
+                <xs:attribute ref="xml:lang" use="required" />
+              </xs:complexType>
+            </xs:element>
+            <xs:group ref="richtext" minOccurs="0" maxOccurs="unbounded" />
+          </xs:sequence>
+          <xs:attribute ref="xml:id" use="optional" />
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="bitext" mixed="true">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element name="foreignphrase" minOccurs="1" maxOccurs="1">
+        <xs:complexType>
+          <xs:complexContent>
+            <xs:extension base="rtext">
+              <xs:attribute ref="role" />
+              <xs:attribute ref="xml:lang" use="required" />
+            </xs:extension>
+          </xs:complexContent>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="ruby" type="ruby" minOccurs="0" maxOccurs="unbounded" />
     </xs:sequence>
   </xs:complexType>
   <xs:simpleType name="date">
     <xs:union memberTypes="xs:date xs:gYearMonth xs:gYear" />
   </xs:simpleType>
-  <xs:complexType name="bisection">
-    <xs:sequence>
-      <xs:element name="info" type="mininfo" minOccurs="1" maxOccurs="1" />
-      <xs:choice minOccurs="1" maxOccurs="unbounded">
-        <xs:element name="para" type="bipara" minOccurs="0" maxOccurs="unbounded" />
-        <xs:element name="mediaobject" type="mediaobject" />
-        <xs:element name="bridgehead">
-          <xs:complexType>
-            <xs:attribute name="renderas" fixed="other" />
-            <xs:attribute name="otherrenderas" fixed="separator" />
-          </xs:complexType>
-        </xs:element>
-      </xs:choice>
-    </xs:sequence>
-  </xs:complexType>
-  <xs:complexType name="bitext" mixed="true">
-    <xs:sequence minOccurs="1" maxOccurs="1">
-      <xs:element name="foreignphrase" type="sourcetext" minOccurs="1" maxOccurs="1" />
-      <xs:element name="ruby" type="ruby" minOccurs="0" maxOccurs="unbounded" />
-    </xs:sequence>
+  <xs:complexType name="footnote">
+    <xs:all>
+      <xs:element name="para" type="rtext" />
+    </xs:all>
   </xs:complexType>
   <xs:complexType name="imagedata">
     <xs:attribute name="fileref" type="xs:string" />
@@ -259,6 +274,28 @@
       </xs:element>
     </xs:all>
   </xs:complexType>
+  <xs:group name="richtext">
+    <xs:choice>
+      <xs:element name="citetitle" type="rtext" />
+      <xs:element name="date" type="date" />
+      <xs:element name="emphasis" type="rtext" />
+      <xs:element name="footnote" type="footnote" />
+      <xs:element name="foreignphrase">
+        <xs:annotation>
+          <xs:documentation>A phrase in a tier language (not the original text in the source
+            language)</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:simpleContent>
+            <xs:extension base="xs:string">
+              <xs:attribute ref="xml:lang" use="required" />
+            </xs:extension>
+          </xs:simpleContent>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="ruby" type="ruby" />
+    </xs:choice>
+  </xs:group>
   <xs:complexType name="rtext" mixed="true">
     <xs:annotation>
       <xs:documentation>Plain text with optional ruby elements for Japanese furiganas</xs:documentation>
@@ -267,41 +304,25 @@
       <xs:element name="ruby" type="ruby" minOccurs="0" maxOccurs="unbounded" />
     </xs:sequence>
   </xs:complexType>
-  <xs:complexType name="richtext" mixed="true">
-    <xs:sequence>
-      <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element name="citetitle" type="xs:string" />
-        <xs:element name="date" type="date" />
-        <xs:element name="emphasis" type="xs:string" />
-        <xs:element name="foreignphrase">
-          <xs:annotation>
-            <xs:documentation>A phrase in a tier language (not the original text in the source
-              language)</xs:documentation>
-          </xs:annotation>
-          <xs:complexType>
-            <xs:simpleContent>
-              <xs:extension base="xs:string">
-                <xs:attribute ref="xml:lang" use="required" />
-              </xs:extension>
-            </xs:simpleContent>
-          </xs:complexType>
-        </xs:element>
-        <xs:element name="ruby" type="ruby" />
-      </xs:choice>
-    </xs:sequence>
-  </xs:complexType>
   <xs:attribute name="role" fixed="source" />
-  <xs:complexType name="sourcetext">
-    <xs:complexContent>
-      <xs:extension base="rtext">
-        <xs:attribute ref="role" />
-        <xs:attribute ref="xml:lang" use="required" />
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
   <xs:complexType name="ruby" mixed="true">
     <xs:sequence>
       <xs:element name="rt" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="section">
+    <xs:sequence>
+      <xs:element name="info" type="mininfo" minOccurs="1" maxOccurs="1" />
+      <xs:choice minOccurs="1" maxOccurs="unbounded">
+        <xs:element name="para" type="bipara" minOccurs="0" maxOccurs="unbounded" />
+        <xs:element name="mediaobject" type="mediaobject" />
+        <xs:element name="bridgehead">
+          <xs:complexType>
+            <xs:attribute name="renderas" fixed="other" />
+            <xs:attribute name="otherrenderas" fixed="separator" />
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
     </xs:sequence>
   </xs:complexType>
 </xs:schema>
