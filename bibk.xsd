@@ -1,5 +1,5 @@
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
-  attributeFormDefault="unqualified">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xml="http://www.w3.org/XML/1998/namespace" elementFormDefault="qualified"
+  attributeFormDefault="unqualified"><!-- XML Schema Version 1.1 -->
   <xs:annotation>
     <xs:documentation>BIlingual BooK (bibk) XML Schema. A variant of DocBook 5.2 tailored for
       bilingual dedicated to bilingual text documents: poems, short stories, novels, academic
@@ -161,14 +161,10 @@
       <xs:element name="para" minOccurs="1" maxOccurs="1">
         <xs:complexType mixed="true">
           <xs:sequence>
-            <xs:element name="foreignphrase" minOccurs="1" maxOccurs="1">
-              <xs:complexType>
-                <xs:sequence minOccurs="1" maxOccurs="1">
-                  <xs:group ref="richtext" minOccurs="0" maxOccurs="unbounded" />
-                </xs:sequence>
-                <xs:attribute ref="role" />
-                <xs:attribute ref="xml:lang" use="required" />
-              </xs:complexType>
+            <xs:element name="foreignphrase" minOccurs="1" maxOccurs="1" type="foreignphrase">
+              <xs:annotation>
+                <xs:documentation>Source paragraph</xs:documentation>
+              </xs:annotation>
             </xs:element>
             <xs:group ref="richtext" minOccurs="0" maxOccurs="unbounded" />
           </xs:sequence>
@@ -176,6 +172,7 @@
         </xs:complexType>
       </xs:element>
     </xs:sequence>
+    <xs:assert test="foreignphrase[1]/@role='source'"/>
   </xs:complexType>
   <xs:complexType name="bitext" mixed="true">
     <xs:sequence minOccurs="1" maxOccurs="1">
@@ -183,7 +180,7 @@
         <xs:complexType>
           <xs:complexContent>
             <xs:extension base="rtext">
-              <xs:attribute ref="role" />
+              <xs:attribute name="role" fixed="source" use="required"/>
               <xs:attribute ref="xml:lang" use="required" />
             </xs:extension>
           </xs:complexContent>
@@ -200,6 +197,13 @@
       <xs:element name="para" type="rtext" />
     </xs:all>
   </xs:complexType>
+  <xs:complexType name="foreignphrase">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:group ref="richtext" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:attribute name="role" fixed="source" use="optional"/>
+    <xs:attribute ref="xml:lang" use="required" />
+  </xs:complexType>
   <xs:complexType name="imagedata">
     <xs:attribute name="fileref" type="xs:string" />
   </xs:complexType>
@@ -213,15 +217,16 @@
       <xs:element name="primaryie" type="primaryie" />
     </xs:all>
   </xs:complexType>
-  <xs:complexType name="mediaobject">
+  <xs:complexType name="mediaobject">  
     <xs:annotation>
-      <xs:documentation>A default (bilingual) image, and optionaly 2 monolingual images</xs:documentation>
+      <xs:documentation>A default (bilingual) image, and optionaly 2 monolingual images (with xml:lang set)</xs:documentation>
     </xs:annotation>
     <xs:sequence>
-      <xs:element name="imageobject" type="imageobject" minOccurs="1" maxOccurs="1" />
-      <xs:element name="imageobject" type="monoimageobject" minOccurs="0" maxOccurs="1" />
+      <xs:element name="imageobject" type="imageobject" minOccurs="1" maxOccurs="3" />
       <xs:element name="caption" type="bipara" minOccurs="0" maxOccurs="1" />
     </xs:sequence>
+    <xs:attribute ref="xml:lang" use="optional" />
+    <xs:assert test="not(imageobject[1]/@xml:lang)"/>   
   </xs:complexType>
   <xs:complexType name="medinfo">
     <xs:complexContent>
@@ -238,16 +243,6 @@
       <xs:element name="subtitle" type="bitext" minOccurs="0" maxOccurs="1" />
       <xs:element name="title" type="bitext" minOccurs="1" maxOccurs="1" />
     </xs:sequence>
-  </xs:complexType>
-  <xs:complexType name="monoimageobject">
-    <xs:annotation>
-      <xs:documentation>An image on which some monolingual text is shown.</xs:documentation>
-    </xs:annotation>
-    <xs:complexContent>
-      <xs:extension base="imageobject">
-        <xs:attribute ref="xml:lang" use="required" />
-      </xs:extension>
-    </xs:complexContent>
   </xs:complexType>
   <xs:simpleType name="outputformat">
     <xs:restriction base="xs:string">
@@ -280,18 +275,11 @@
       <xs:element name="date" type="date" />
       <xs:element name="emphasis" type="rtext" />
       <xs:element name="footnote" type="footnote" />
-      <xs:element name="foreignphrase">
+      <xs:element name="foreignphrase" type="foreignphrase">
         <xs:annotation>
           <xs:documentation>A phrase in a tier language (not the original text in the source
             language)</xs:documentation>
         </xs:annotation>
-        <xs:complexType>
-          <xs:simpleContent>
-            <xs:extension base="xs:string">
-              <xs:attribute ref="xml:lang" use="required" />
-            </xs:extension>
-          </xs:simpleContent>
-        </xs:complexType>
       </xs:element>
       <xs:element name="ruby" type="ruby" />
     </xs:choice>
@@ -304,7 +292,6 @@
       <xs:element name="ruby" type="ruby" minOccurs="0" maxOccurs="unbounded" />
     </xs:sequence>
   </xs:complexType>
-  <xs:attribute name="role" fixed="source" />
   <xs:complexType name="ruby" mixed="true">
     <xs:sequence>
       <xs:element name="rt" type="xs:string" />
