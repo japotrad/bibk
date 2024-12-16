@@ -34,7 +34,7 @@ The document content is an interleave of rich text blocks, figures and separator
 The following inline elements are supported:
 - _citetitle_ for work titles
 - _date_ for dates
-- _emphasis_for italic
+- _emphasis_ for italic and bold
 _ _foreignphrase_ for words in other languages
 - _ruby_ and _rt_ for Japanese furigana
 - _footnote_ for notes
