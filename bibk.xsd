@@ -117,6 +117,11 @@
           </xs:complexType>
         </xs:element>
       </xs:sequence>
+      <xs:attribute ref="xml:lang" use="required">
+        <xs:annotation>
+          <xs:documentation>Target language, i.e language of the target audience</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   <xs:complexType name="authorgroup">
