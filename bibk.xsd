@@ -15,7 +15,7 @@
             <xs:complexContent>
               <xs:extension base="mininfo">
                 <xs:sequence>
-                  <xs:element name="abstract" type="bipara" minOccurs="0" maxOccurs="1" />
+                  <xs:element name="abstract" type="para" minOccurs="0" maxOccurs="1" />
                   <xs:element name="authorgroup" type="authorgroup" minOccurs="0" maxOccurs="1" />
                   <xs:element name="biblioid" type="xs:string" minOccurs="0" maxOccurs="2" />
                   <xs:element name="cover" type="xs:string" minOccurs="0" maxOccurs="1" />
@@ -23,13 +23,12 @@
                   <xs:element name="keywordset" minOccurs="0" maxOccurs="1">
                     <xs:complexType>
                       <xs:sequence>
-                        <xs:element name="keyword" type="xs:string" minOccurs="1"
-                          maxOccurs="unbounded" />
+                        <xs:element name="keyword" type="xs:string" minOccurs="1" maxOccurs="unbounded" />
                       </xs:sequence>
                     </xs:complexType>
                   </xs:element>
-                  <xs:element name="legalnotice" type="bipara" minOccurs="0" maxOccurs="1" />
-                  <xs:element name="printhistory" type="bipara" minOccurs="0" maxOccurs="1" />
+                  <xs:element name="legalnotice" type="para" minOccurs="0" maxOccurs="1" />
+                  <xs:element name="printhistory" type="para" minOccurs="0" maxOccurs="1" />
                   <xs:element name="pubdate" type="date" minOccurs="0" maxOccurs="1" />
                   <xs:element name="publisher" minOccurs="0" maxOccurs="1">
                     <xs:complexType>
@@ -162,22 +161,33 @@
     </xs:sequence>
   </xs:complexType>
   <xs:complexType name="bipara">
-    <xs:sequence minOccurs="1" maxOccurs="1">
-      <xs:element name="para" minOccurs="1" maxOccurs="1">
-        <xs:complexType mixed="true">
+    <xs:annotation>
+      <xs:documentation>A paragraph having the source text in the original language attached.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="para">
           <xs:sequence>
             <xs:element name="foreignphrase" minOccurs="1" maxOccurs="1" type="foreignphrase">
               <xs:annotation>
                 <xs:documentation>Source paragraph</xs:documentation>
               </xs:annotation>
             </xs:element>
+          </xs:sequence>
+    <xs:assert test="foreignphrase[1]/@role='source'"/>
+    </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="para">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element name="para" minOccurs="1" maxOccurs="1">
+        <xs:complexType mixed="true">
+          <xs:sequence minOccurs="0" maxOccurs="unbounded">
             <xs:group ref="richtext" minOccurs="0" maxOccurs="unbounded" />
           </xs:sequence>
           <xs:attribute ref="xml:id" use="optional" />
         </xs:complexType>
       </xs:element>
     </xs:sequence>
-    <xs:assert test="foreignphrase[1]/@role='source'"/>
   </xs:complexType>
   <xs:complexType name="bitext" mixed="true">
     <xs:sequence minOccurs="1" maxOccurs="1">
@@ -281,10 +291,6 @@
       <xs:element name="emphasis" type="rtext" />
       <xs:element name="footnote" type="footnote" />
       <xs:element name="foreignphrase" type="foreignphrase">
-        <xs:annotation>
-          <xs:documentation>A phrase in a tier language (not the original text in the source
-            language)</xs:documentation>
-        </xs:annotation>
       </xs:element>
       <xs:element name="ruby" type="ruby" />
     </xs:choice>
