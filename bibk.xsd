@@ -295,12 +295,12 @@
     </xs:sequence>
   </xs:complexType>
   <xs:group name="richtext">
-    <xs:choice minOccurs="0">
-      <xs:element name="citetitle" type="rtext"/>
-      <xs:element name="date" type="date"/>
-      <xs:element name="emphasis" type="rtext"/>
-      <xs:element name="footnote" type="footnote"/>
-      <xs:element name="ruby" type="ruby"/>
+    <xs:choice>
+      <xs:element name="citetitle" type="rtext" minOccurs="0"/>
+      <xs:element name="date" type="date" minOccurs="0"/>
+      <xs:element name="emphasis" type="rtext" minOccurs="0"/>
+      <xs:element name="footnote" type="footnote" minOccurs="0"/>
+      <xs:element name="ruby" type="ruby" minOccurs="0"/>
     </xs:choice>
   </xs:group>
   <xs:complexType name="rtext" mixed="true">
