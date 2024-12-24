@@ -160,6 +160,13 @@
   <xs:simpleType name="date">
     <xs:union memberTypes="xs:date xs:gYearMonth xs:gYear"/>
   </xs:simpleType>
+  <xs:complexType name="emphasis">
+    <xs:complexContent>
+      <xs:extension base="rtext">
+        <xs:attribute name="role"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
   <xs:complexType name="footnote">
     <xs:all>
       <xs:element name="para" type="rtext"/>
@@ -298,7 +305,7 @@
     <xs:choice>
       <xs:element name="citetitle" type="rtext" minOccurs="0"/>
       <xs:element name="date" type="date" minOccurs="0"/>
-      <xs:element name="emphasis" type="rtext" minOccurs="0"/>
+      <xs:element name="emphasis" type="emphasis" minOccurs="0"/>
       <xs:element name="footnote" type="footnote" minOccurs="0"/>
       <xs:element name="ruby" type="ruby" minOccurs="0"/>
     </xs:choice>
