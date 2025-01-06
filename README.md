@@ -2,11 +2,11 @@
 Xml file format definition for a basic variant of DocBook dedicated to bilingual text documents
 
 ## Dual language management
-Let’s say we have a document in a source language _so_, translated into a target language _ta_. The bilingual book audience is mainly composed of the target language users. So, the bibk root element should be in _ta_ language, and the source text is added via the _foreignphrase_ tag. For example:
+Let’s say we have a document in a source language _so_, translated into a target language _ta_. The bilingual book audience is mainly composed of the target language users. So, the bibk root element should be in _ta_ language, and the source text is added via the _source_ tag. For example:
 ```xml
 <book xml:lang="ta">
  <info>
-  <title>Translated title<foreignphrase xml:lang="so" role="source">Original title</foreignphrase></title>
+  <title>Translated title<source xml:lang="so" role="source">Original title</source></title>
  </info>
 </book>
 ```
@@ -35,9 +35,9 @@ The following inline elements are supported:
 - _citetitle_ for work titles
 - _date_ for dates
 - _emphasis_ for italic and bold
-_ _foreignphrase_ for words in other languages
-- _ruby_ and _rt_ for Japanese furigana
 - _footnote_ for notes
+- _foreignphrase_ for words in other languages
+- _ruby_ and _rt_ for Japanese furigana
 
 ### Figures
 - _mediaobject_ for images
@@ -48,5 +48,4 @@ Note: For each figure, up to 3 variants can be prepared: source language only, t
 - _bridgehead_
 
 ## Comparison with DocBook 5.2 format
-Bibk format restricts DocBook format in many many ways. The only formal extension it adds is Japanese furigana (_ruby_ & _rt_ tags). The main semantic tweak is related to _foreignphrase_ element with _role="source"_ attribute, which exposes the original text in the source language.
-A valid Bibk document with no furigana should be valid regarding the DocBook relaxng. (No testing have been performed, but you can report issues if you find some.)
+Bibk format restricts DocBook format in many many ways, and extends it for Japanese furigana (_ruby_ & _rt_ tags) and for the source text (_source_ tag).

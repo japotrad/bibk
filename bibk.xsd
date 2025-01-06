@@ -132,23 +132,21 @@
     <xs:complexContent>
       <xs:extension base="para">
         <xs:sequence>
-          <xs:element name="foreignphrase" minOccurs="1" maxOccurs="1" type="foreignphrase">
+          <xs:element name="source" minOccurs="1" maxOccurs="1" type="source">
             <xs:annotation>
               <xs:documentation>Source paragraph</xs:documentation>
             </xs:annotation>
           </xs:element>
         </xs:sequence>
-        <xs:assert test="foreignphrase[1]/@role = 'source'"/>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
   <xs:complexType name="bitext" mixed="true">
     <xs:sequence minOccurs="1" maxOccurs="1">
-      <xs:element name="foreignphrase" minOccurs="1" maxOccurs="1">
+      <xs:element name="source" minOccurs="1" maxOccurs="1">
         <xs:complexType>
           <xs:complexContent>
             <xs:extension base="rtext">
-              <xs:attribute name="role" fixed="source" use="required"/>
               <xs:attribute ref="xml:lang" use="required"/>
             </xs:extension>
           </xs:complexContent>
@@ -172,11 +170,10 @@
       <xs:element name="para" type="rtext"/>
     </xs:all>
   </xs:complexType>
-  <xs:complexType name="foreignphrase">
+  <xs:complexType name="source">
     <xs:sequence minOccurs="1" maxOccurs="1">
       <xs:group ref="richtext" minOccurs="0" maxOccurs="unbounded"/>
     </xs:sequence>
-    <xs:attribute name="role" fixed="source" use="optional"/>
     <xs:attribute ref="xml:lang" use="required"/>
   </xs:complexType>
   <xs:complexType name="imagedata">
@@ -285,15 +282,13 @@
   </xs:complexType>
   <xs:complexType name="ptext" mixed="true">
     <xs:annotation>
-      <xs:documentation>Plain text with optional foreignphrase for the source
-        text</xs:documentation>
+      <xs:documentation>Plain text with optional source text</xs:documentation>
     </xs:annotation>
     <xs:sequence>
-      <xs:element name="foreignphrase" minOccurs="0" maxOccurs="1">
+      <xs:element name="source" minOccurs="0" maxOccurs="1">
         <xs:complexType>
           <xs:simpleContent>
             <xs:extension base="xs:string">
-              <xs:attribute name="role" fixed="source" use="required"/>
               <xs:attribute ref="xml:lang" use="required"/>
             </xs:extension>
           </xs:simpleContent>
@@ -307,13 +302,13 @@
       <xs:element name="date" type="date" minOccurs="0"/>
       <xs:element name="emphasis" type="emphasis" minOccurs="0"/>
       <xs:element name="footnote" type="footnote" minOccurs="0"/>
+      <xs:element name="foreignphrase" type="rtext" minOccurs="0"/>
       <xs:element name="ruby" type="ruby" minOccurs="0"/>
     </xs:choice>
   </xs:group>
   <xs:complexType name="rtext" mixed="true">
     <xs:annotation>
-      <xs:documentation>Plain text with optional ruby elements for Japanese
-        furiganas</xs:documentation>
+      <xs:documentation>Plain text with optional ruby elements for Japanese furiganas</xs:documentation>
     </xs:annotation>
     <xs:sequence>
       <xs:element name="ruby" type="ruby" minOccurs="0" maxOccurs="unbounded"/>
