@@ -6,7 +6,7 @@ Let’s say we have a document in a source language _so_, translated into a targ
 ```xml
 <book xml:lang="ta">
  <info>
-  <title>Translated title<source xml:lang="so" role="source">Original title</source></title>
+  <title>Translated title<source xml:lang="so">Original title</source></title>
  </info>
 </book>
 ```
@@ -18,7 +18,7 @@ Let’s say we have a document in a source language _so_, translated into a targ
 - Publisher, publication date, ISBN...
 
 ### Document content structure
-Three structures are supported :
+Optionally, one preface, and then one of these three structures:
 - Single article
 - List of chapters
 - List of parts containing chapters

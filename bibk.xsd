@@ -16,7 +16,13 @@
             <xs:complexContent>
               <xs:extension base="mininfo">
                 <xs:sequence>
-                  <xs:element name="abstract" type="para" minOccurs="0" maxOccurs="1"/>
+                  <xs:element name="abstract" minOccurs="0" maxOccurs="1">
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element name="literallayout" type="xs:string" minOccurs="1" maxOccurs="1"/>
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
                   <xs:element name="authorgroup" type="authorgroup" minOccurs="0" maxOccurs="1"/>
                   <xs:element name="biblioid" type="xs:string" minOccurs="0" maxOccurs="2"/>
                   <xs:element name="cover" type="xs:string" minOccurs="0" maxOccurs="1"/>
@@ -24,8 +30,7 @@
                   <xs:element name="keywordset" minOccurs="0" maxOccurs="1">
                     <xs:complexType>
                       <xs:sequence>
-                        <xs:element name="keyword" type="xs:string" minOccurs="1"
-                          maxOccurs="unbounded"/>
+                        <xs:element name="keyword" type="xs:string" minOccurs="1" maxOccurs="unbounded"/>
                       </xs:sequence>
                     </xs:complexType>
                   </xs:element>
@@ -67,8 +72,6 @@
             </xs:complexContent>
           </xs:complexType>
         </xs:element>
-
-
         <xs:sequence>
           <xs:element name="preface" minOccurs="0" maxOccurs="1" type="preface"/>
           <xs:choice>
@@ -170,7 +173,7 @@
       <xs:element name="para" type="rtext"/>
     </xs:all>
   </xs:complexType>
-  <xs:complexType name="source">
+  <xs:complexType name="source" mixed="true">
     <xs:sequence minOccurs="1" maxOccurs="1">
       <xs:group ref="richtext" minOccurs="0" maxOccurs="unbounded"/>
     </xs:sequence>
@@ -200,16 +203,6 @@
     </xs:sequence>
     <xs:attribute ref="xml:lang" use="optional"/>
     <xs:assert test="not(imageobject[1]/@xml:lang)"/>
-  </xs:complexType>
-  <xs:complexType name="medinfo">
-    <xs:complexContent>
-      <xs:extension base="mininfo">
-        <xs:sequence>
-          <xs:element name="authorgroup" type="authorgroup" minOccurs="0" maxOccurs="1"/>
-          <xs:element name="pubdate" type="xs:date" minOccurs="0" maxOccurs="1"/>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
   </xs:complexType>
   <xs:complexType name="mininfo">
     <xs:sequence>
@@ -275,8 +268,17 @@
   </xs:complexType>
   <xs:complexType name="preface">
     <xs:sequence>
-      <xs:element name="info" type="medinfo" minOccurs="0" maxOccurs="1"/>
-      <xs:element name="warning" type="section"/>
+      <xs:element name="info" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+            <xs:sequence>
+              <xs:element name="authorgroup" type="authorgroup" minOccurs="0" maxOccurs="1"/>
+              <xs:element name="pubdate" type="xs:date" minOccurs="0" maxOccurs="1"/>
+              <xs:element name="subtitle" type="xs:string" minOccurs="0" maxOccurs="1"/>
+              <xs:element name="title" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="warning" type="section" minOccurs="0" maxOccurs="1"/>
       <xs:element name="para" type="para" minOccurs="1" maxOccurs="unbounded"/>
     </xs:sequence>
   </xs:complexType>
