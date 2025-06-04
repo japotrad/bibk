@@ -1,3 +1,6 @@
+# This repository has been moved to Codeberg on June 2025. See you there!
+https://codeberg.org/Japotrad/bibk
+---
 # bibk
 Xml file format definition for a basic variant of DocBook dedicated to bilingual text documents
 
